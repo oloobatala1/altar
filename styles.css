@@ -1,0 +1,220 @@
+/* Estilos generales */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sección 1: Registrar Santo */
+#register-saint {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#register-saint form {
+    display: flex;
+    flex-direction: column;
+}
+
+#register-saint label {
+    margin-top: 10px;
+}
+
+#register-saint button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#register-saint button:hover {
+    background-color: #0056b3;
+}
+
+/* Sección 2: Santos Registrados */
+#registered-saints {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+#saints-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.saint-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.saint-card img {
+    width: 150px;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+.saint-card button {
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.saint-card button.remove {
+    background-color: #dc3545;
+}
+
+.saint-card button:hover {
+    opacity: 0.8;
+}
+
+/* Ajuste de la descripción en la tarjeta del santo */
+.saint-card p {
+    word-wrap: break-word; /* Permite que las palabras largas se dividan en varias líneas */
+    text-align: justify;   /* Justifica el texto para mejor visualización */
+}
+
+/* Ajuste del input para el mensaje */
+.saint-card .message-input {
+    width: 100%;           /* Asegura que el input ocupe el 100% del ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y el borde dentro del ancho del input */
+}
+
+
+/* Sección 3: Velas Encendidas */
+#lit-candles {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+#candles-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.candle-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.candle-card img.saint-image {
+    width: 150px;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+.candle-card img.candle-gif {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Ajuste del mensaje en la tarjeta de vela encendida */
+.candle-card p {
+    word-wrap: break-word;  /* Permite que las palabras largas se dividan en varias líneas */
+    text-align: justify;    /* Justifica el texto para mejor visualización */
+    white-space: normal;    /* Asegura que el texto pueda hacer saltos de línea */
+    overflow-wrap: break-word; /* Alternativa para asegurar el ajuste en navegadores */
+}
+
+/* Estilo para el contador de tiempo restante */
+.candle-card p.remaining-time {
+    font-family: 'Digital', monospace; /* Cambia la fuente a una de estilo digital */
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+    color: #00ff00; /* Color verde brillante para el texto */
+    background-color: black; /* Fondo negro para simular un display digital */
+    padding: 5px; /* Espaciado interno */
+    border-radius: 5px; /* Esquinas redondeadas */
+    letter-spacing: 1px; /* Espaciado entre letras para un efecto más digital */
+    text-align: center; /* Centra el texto */
+}
+
+
+/* Sección 4: Total de Velas Encendidas */
+#total-candles {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+#total-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.total-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-card img {
+    width: 150px;
+    object-fit: cover;
+    border-radius: 10%;
+}
+
+/* Sección 5: Registro de Velas Encendidas */
+#candles-log {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+#log-container {
+    list-style-type: none;
+    padding: 0;
+}
+
+#log-container li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste del mensaje en la lista del registro de velas encendidas */
+#log-container li {
+    word-wrap: break-word;    /* Permite que las palabras largas se dividan en varias líneas */
+    white-space: normal;      /* Permite saltos de línea */
+    overflow-wrap: break-word; /* Asegura que el texto se ajuste correctamente en navegadores modernos */
+    text-align: justify;      /* Justifica el texto para una mejor visualización */
+}

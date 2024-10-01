@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altar Virtual</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Altar Virtual</h1>
+
+    <!-- Sección 1: Registrar Santo -->
+    <section id="register-saint">
+        <h2>Registrar tu Santo</h2>
+        <form id="saint-form">
+            <label for="saint-name">Nombre del Santo:</label>
+            <input type="text" id="saint-name" required>
+            <label for="saint-image">Link de la Imagen:</label>
+            <input type="url" id="saint-image" required>
+            <label for="saint-description">Descripción:</label>
+            <textarea id="saint-description"></textarea>
+            <button type="submit">Registrar tu Santo</button>
+        </form>
+    </section>
+
+    <!-- Sección 2: Santos Registrados -->
+    <section id="registered-saints">
+        <h2>Santos Registrados</h2>
+        <div id="saints-container">
+            <!-- Las tarjetas de los santos se agregarán aquí dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Sección 3: Velas Encendidas -->
+    <section id="lit-candles">
+        <h2>Velas Encendidas</h2>
+        <div id="candles-container">
+            <!-- Las tarjetas de las velas encendidas se agregarán aquí dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Sección 4: Total de Velas Encendidas -->
+    <section id="total-candles">
+        <h2>Total de Velas Encendidas por Santos</h2>
+        <div id="total-container">
+            <!-- El total de velas encendidas por santos se mostrará aquí dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Sección 5: Registro de Velas Encendidas -->
+    <section id="candles-log">
+        <h2>Registro de Velas Encendidas por Santos</h2>
+        <ul id="log-container">
+            <!-- El registro de velas encendidas se agregará aquí dinámicamente -->
+        </ul>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
