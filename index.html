@@ -55,6 +55,27 @@
         </ul>
     </section>
 
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDu1Kaiw5VXhr4xVrwuHrgOEQLlKoniOnM",
+    authDomain: "altar-bccd9.firebaseapp.com",
+    projectId: "altar-bccd9",
+    storageBucket: "altar-bccd9.appspot.com",
+    messagingSenderId: "866590395536",
+    appId: "1:866590395536:web:6c8a39a590027d12069c15",
+    measurementId: "G-DJ762V0N2W"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+</script>
+
     <script src="script.js"></script>
 </body>
 </html>
