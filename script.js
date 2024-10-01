@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const saintForm = document.getElementById("saint-form");
     const saintsContainer = document.getElementById("saints-container");
     const candlesContainer = document.getElementById("candles-container");
@@ -10,64 +10,92 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalCandles = {};
 
     // Registrar Santo
-    saintForm.addEventListener("submit", (e) => {
+    saintForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const name = document.getElementById("saint-name").value;
         const image = document.getElementById("saint-image").value;
         const description = document.getElementById("saint-description").value;
 
-        const saint = { name, image, description, candles: 0 };
-        saints.push(saint);
-        renderSaints();
+        try {
+            await addDoc(collection(db, "saints"), {
+                name,
+                image,
+                description,
+                candles: 0
+            });
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
         saintForm.reset();
+    });
+
+    // Obtener y renderizar Santos
+    const q = query(collection(db, "saints"));
+    onSnapshot(q, (querySnapshot) => {
+        saints = [];
+        querySnapshot.forEach((doc) => {
+            saints.push({ id: doc.id, ...doc.data() });
+        });
+        renderSaints();
     });
 
     // Renderizar Santos Registrados
     function renderSaints() {
-    saintsContainer.innerHTML = "";
-    saints.forEach((saint, index) => {
-        const saintCard = document.createElement("div");
-        saintCard.classList.add("saint-card");
-        saintCard.innerHTML = `
-            <h3>${saint.name}</h3>
-            <img src="${saint.image}" alt="${saint.name}">
-            <p>${saint.description}</p>
-            <textarea placeholder="Escribe tu Agradecimiento" class="message-input" rows="4" cols="50"></textarea>
-            <img src="https://lh3.googleusercontent.com/d/1-BxFIRq0PXU0O7p_n1YlIMjn84g8cBEg" class="candle-image">
-            <button class="light-candle">Encender Vela</button>
-            <button class="remove-saint">Remover Santo</button>
-        `;
+        saintsContainer.innerHTML = "";
+        saints.forEach((saint, index) => {
+            const saintCard = document.createElement("div");
+            saintCard.classList.add("saint-card");
+            saintCard.innerHTML = `
+                <h3>${saint.name}</h3>
+                <img src="${saint.image}" alt="${saint.name}">
+                <p>${saint.description}</p>
+                <textarea placeholder="Escribe tu Agradecimiento" class="message-input" rows="4" cols="50"></textarea>
+                <img src="https://lh3.googleusercontent.com/d/1-BxFIRq0PXU0O7p_n1YlIMjn84g8cBEg" class="candle-image">
+                <button class="light-candle">Encender Vela</button>
+                <button class="remove-saint">Remover Santo</button>
+            `;
 
-        saintCard.querySelector(".light-candle").addEventListener("click", () => {
-            const message = saintCard.querySelector(".message-input").value;
-            lightCandle(saint, message);
-            saintCard.querySelector(".message-input").value = ""; // Limpia el textarea después de enviar
+            saintCard.querySelector(".light-candle").addEventListener("click", async () => {
+                const message = saintCard.querySelector(".message-input").value;
+                await lightCandle(saint, message);
+                saintCard.querySelector(".message-input").value = ""; // Limpia el textarea después de enviar
+            });
+
+            saintCard.querySelector(".remove-saint").addEventListener("click", async () => {
+                await deleteDoc(doc(db, "saints", saint.id));
+            });
+
+            saintsContainer.appendChild(saintCard);
         });
-
-        saintCard.querySelector(".remove-saint").addEventListener("click", () => {
-            saints.splice(index, 1);
-            renderSaints();
-            renderTotalCandles();
-        });
-
-        saintsContainer.appendChild(saintCard);
-    });
-}
-
+    }
 
     // Encender Vela
-    function lightCandle(saint, message) {
-        const candle = {
-            saint,
-            message,
-            endTime: new Date().getTime() + 8 * 60 * 60 * 1000 // 8 horas
-        };
-        candles.push(candle);
-        saint.candles++;
-        renderCandles();
-        renderTotalCandles();
-        renderLog(saint, message);
+    async function lightCandle(saint, message) {
+        const endTime = new Date().getTime() + 8 * 60 * 60 * 1000; // 8 horas
+        try {
+            await addDoc(collection(db, "candles"), {
+                saintId: saint.id,
+                message,
+                endTime
+            });
+            const saintRef = doc(db, "saints", saint.id);
+            await updateDoc(saintRef, {
+                candles: saint.candles + 1
+            });
+        } catch (e) {
+            console.error("Error adding candle: ", e);
+        }
     }
+
+    // Obtener y renderizar Velas Encendidas
+    const candleQuery = query(collection(db, "candles"));
+    onSnapshot(candleQuery, (querySnapshot) => {
+        candles = [];
+        querySnapshot.forEach((doc) => {
+            candles.push({ id: doc.id, ...doc.data() });
+        });
+        renderCandles();
+    });
 
     // Renderizar Velas Encendidas
     function renderCandles() {
@@ -75,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const now = new Date().getTime();
 
         candles = candles.filter(candle => candle.endTime > now);
-        candles.forEach((candle, index) => {
+        candles.forEach((candle) => {
+            const saint = saints.find(s => s.id === candle.saintId);
             const remainingTime = candle.endTime - now;
             const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
@@ -84,9 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const candleCard = document.createElement("div");
             candleCard.classList.add("candle-card");
             candleCard.innerHTML = `
-                <img src="https://media1.tenor.com/m/g05fxbMPwLAAAAAC/vela-r%C3%A1pido.gif" alt="Vela Encendida" class="candle-gif"> <!-- Sustituye el path del gif -->
-                <h3>Vela dedicada a ${candle.saint.name}</h3>
-                <img src="${candle.saint.image}" alt="${candle.saint.name}" class="saint-image">
+                <img src="https://media1.tenor.com/m/g05fxbMPwLAAAAAC/vela-r%C3%A1pido.gif" alt="Vela Encendida" class="candle-gif">
+                <h3>Vela dedicada a ${saint.name}</h3>
+                <img src="${saint.image}" alt="${saint.name}" class="saint-image">
                 <p>${candle.message}</p>
                 <p class="remaining-time">Duración restante de la Vela:<br> ${hours}h ${minutes}m ${seconds}s</p>
             `;
